@@ -1,0 +1,5 @@
+remote_theme: pages-themes/cayman@v0.2.0
+title: [Moco]
+description: [moco is a high-performance CLI utility built in C99 for Linux. It is designed to manage instances and dependencies—such as Minecraft Java Edition—with a focus on speed and a minimal footprint.]
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
