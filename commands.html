@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>moco — 命令参考</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="moco.ico" sizes="any">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="topbar-logo">moco</a>
+      <nav class="topbar-nav">
+        <a href="index.html">首页</a>
+        <a href="features.html">核心特性</a>
+        <a href="architecture.html">技术架构</a>
+        <a href="quickstart.html">快速开始</a>
+        <a href="commands.html" class="active">命令参考</a>
+        <a href="store.html">存储引擎</a>
+        <a href="ai-plan.html">AI 计划</a>
+        <a href="roadmap.html">路线图</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    <h1>命令参考</h1>
+
+    <table>
+      <tr><th>命令</th><th>功能</th><th>说明</th></tr>
+      <tr><td><code>moco init</code></td><td>初始化工作目录</td><td>创建配置目录和默认配置文件 <code>instance.toml</code></td></tr>
+      <tr><td><code>moco login</code></td><td>Microsoft 账户登录</td><td>通过设备码流程完成 OAuth2 认证，获取并缓存 Token</td></tr>
+      <tr><td><code>moco install</code></td><td>下载安装</td><td>下载 Minecraft 版本 jar、模组加载器及配置的模组文件</td></tr>
+      <tr><td><code>moco start</code></td><td>启动游戏</td><td>组装 classpath 和 JVM 参数，通过 fork+execvp 启动 Minecraft</td></tr>
+      <tr><td><code>moco search &lt;关键词&gt;</code></td><td>搜索版本</td><td>搜索可用的 Minecraft 版本和模组加载器版本</td></tr>
+      <tr><td><code>moco update</code></td><td>更新版本清单</td><td>从 Mojang API 拉取最新的版本和资源清单</td></tr>
+      <tr><td><code>moco import &lt;文件.mrpack&gt;</code></td><td>导入模组包</td><td>导入 Modrinth 格式整合包，自动生成实例配置</td></tr>
+    </table>
+
+    <h2>典型工作流</h2>
+    <pre><code># 全新安装
+moco init
+vim instance.toml     # 编辑配置
+moco login            # 登录账户
+moco install          # 下载安装
+moco start            # 启动
+
+# 导入他人分享的整合包
+moco import 包名.mrpack
+moco install
+moco start
+
+# 切换版本
+vim instance.toml     # 修改 game.version
+moco install
+moco start</code></pre>
+
+    <h2>配置文件格式</h2>
+    <p>moco 使用 TOML 格式存储配置：</p>
+    <pre><code>[game]
+name = "我的实例"               # 实例名称
+version = "1.20.4"              # Minecraft 版本号
+# 以下字段由 moco import 自动生成，手动创建时可省略
+# modpack_version = "13.2.0"
+# modpack_mode = "modrinth"
+
+[launch]
+# java_path = "/usr/bin/java"   # Java 路径（可选，不填则使用自动下载的 JRE）
+jvm_xms = "2G"                  # JVM 初始堆内存
+jvm_xmx = "4G"                  # JVM 最大堆内存
+
+[dependencies]
+# forge = "47.3.0"              # Forge 版本（与 neoforge/fabric-loader 互斥）
+# neoforge = "20.4.251"         # NeoForge 版本
+# fabric-loader = "0.15.11"     # Fabric Loader 版本
+# quilt-loader = "0.26.3"       # Quilt Loader 版本（暂未完全支持）
+
+# 模组列表（选填）
+[[mods]]
+url = "https://cdn.modrinth.com/data/.../sodium-fabric-0.5.8+mc1.20.4.jar"
+sha1 = "abc123..."
+path = ".minecraft/mods/sodium-fabric-0.5.8+mc1.20.4.jar"</code></pre>
+
+    <h3>字段说明</h3>
+    <table>
+      <tr><th>字段</th><th>说明</th></tr>
+      <tr><td><code>game.name</code></td><td>实例显示名称</td></tr>
+      <tr><td><code>game.version</code></td><td>Minecraft 版本号</td></tr>
+      <tr><td><code>game.modpack_version</code></td><td>模组包版本（由 moco import 自动生成）</td></tr>
+      <tr><td><code>game.modpack_mode</code></td><td>模组包模式，目前为 "modrinth"</td></tr>
+      <tr><td><code>launch.java_path</code></td><td>Java 可执行文件路径（可选）</td></tr>
+      <tr><td><code>launch.jvm_xms</code></td><td>JVM 初始堆内存，如 <code>2G</code>、<code>512M</code></td></tr>
+      <tr><td><code>launch.jvm_xmx</code></td><td>JVM 最大堆内存，如 <code>4G</code>、<code>8G</code></td></tr>
+      <tr><td><code>dependencies.forge</code></td><td>Forge 版本号</td></tr>
+      <tr><td><code>dependencies.neoforge</code></td><td>NeoForge 版本号</td></tr>
+      <tr><td><code>dependencies.fabric-loader</code></td><td>Fabric Loader 版本号</td></tr>
+      <tr><td><code>dependencies.quilt-loader</code></td><td>Quilt Loader 版本号（暂未完全支持）</td></tr>
+      <tr><td><code>mods[].url</code></td><td>模组下载地址</td></tr>
+      <tr><td><code>mods[].sha1</code></td><td>模组文件的 SHA1 校验值</td></tr>
+      <tr><td><code>mods[].path</code></td><td>模组安装到的目标路径</td></tr>
+    </table>
+
+    <h2>生成配置文件</h2>
+    <p>填写参数，一键生成 <code>instance.toml</code>：</p>
+    <form id="config-form" class="config-form">
+      <div class="form-group">
+        <label for="inst-name">实例名称</label>
+        <input type="text" id="inst-name" placeholder="我的实例">
+      </div>
+      <div class="form-group">
+        <label for="version">Minecraft 版本号 <span class="required">*</span></label>
+        <input type="text" id="version" placeholder="例如 1.20.4">
+      </div>
+      <div class="form-group">
+        <label for="loader">模组加载器</label>
+        <select id="loader">
+          <option value="">无（原版）</option>
+          <option value="forge">Forge</option>
+          <option value="neoforge">NeoForge</option>
+          <option value="fabric">Fabric</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="jvm-xms">JVM 初始内存</label>
+          <input type="text" id="jvm-xms" placeholder="2G">
+        </div>
+        <div class="form-group">
+          <label for="jvm-xmx">JVM 最大内存</label>
+          <input type="text" id="jvm-xmx" placeholder="4G">
+        </div>
+      </div>
+      <button type="submit" class="btn-validate">生成配置</button>
+    </form>
+    <pre id="preview" class="config-preview" style="display:none;"><code id="preview-code"></code></pre>
+
+    <p><a href="index.html">← 返回首页</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>moco &mdash; <a href="https://github.com/yankedi/moco" target="_blank" rel="noopener">github.com/yankedi/moco</a></p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

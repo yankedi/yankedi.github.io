@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>moco</title>
+  <meta name="description" content="moco 是一个用 C 语言从零编写的 Minecraft 启动器 —— 轻量、快速、透明。">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="moco.ico" sizes="any">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="topbar-logo">moco</a>
+      <nav class="topbar-nav">
+        <a href="index.html" class="active">首页</a>
+        <a href="features.html">核心特性</a>
+        <a href="architecture.html">技术架构</a>
+        <a href="quickstart.html">快速开始</a>
+        <a href="commands.html">命令参考</a>
+        <a href="store.html">存储引擎</a>
+        <a href="ai-plan.html">AI 计划</a>
+        <a href="roadmap.html">路线图</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+
+    <section class="hero">
+      <h1>moco</h1>
+      <p class="tagline">一个用 C 语言从零编写的 Minecraft 启动器 —— 轻量、快速、透明。</p>
+      <div class="hero-links">
+        <a href="https://github.com/yankedi/moco" target="_blank" rel="noopener">GitHub</a>
+        <a href="quickstart.html">快速开始 →</a>
+      </div>
+    </section>
+
+    <h2>概述</h2>
+    <p>moco 是一个纯 C 编写的 Minecraft 命令行启动器和管理工具，目前处于 v0.1.0 早期开发阶段。它覆盖了 Minecraft 实例的完整生命周期：环境初始化、Microsoft OAuth2 登录、版本及模组加载器安装、模组包导入、版本搜索、以及最终的游戏启动。</p>
+    <p>moco 不依赖任何第三方运行时（不需要 Python、Node.js、Java 来运行自身），构建产物是一个单一静态二进制文件，可以在任何 Linux 系统上直接运行。</p>
+
+    <h2>命令链</h2>
+    <pre><code>moco init      → 初始化工作目录和配置文件
+moco login     → Microsoft OAuth2 设备码登录
+moco install   → 下载 Minecraft 版本 + 模组加载器 + 模组
+moco start     → 启动游戏</code></pre>
+
+    <h2>核心特性</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>极致轻量</h3>
+        <p>单一可执行文件，没有 Electron 外壳，没有后台服务，没有运行时依赖。</p>
+      </div>
+      <div class="feature-card">
+        <h3>全生命周期管理</h3>
+        <p>从初始化、登录、安装到启动，一条命令链覆盖完整流程。</p>
+      </div>
+      <div class="feature-card">
+        <h3>模组加载器支持</h3>
+        <p>支持 Forge、NeoForge、Fabric 三大主流加载器，兼容 Modrinth 模组包。</p>
+      </div>
+      <div class="feature-card">
+        <h3>内容寻址存储</h3>
+        <p>基于 SHA1 校验和的智能存储，类似 pnpm 的全局去重与硬链接机制。</p>
+      </div>
+      <div class="feature-card">
+        <h3>异步并发下载</h3>
+        <p>基于 epoll + curl_multi 的自研下载引擎，最多 16 个并发连接。</p>
+      </div>
+      <div class="feature-card">
+        <h3>安全透明</h3>
+        <p>完全开源，本地优先，配置是 TOML 明文，没有遥测，不需要 root。</p>
+      </div>
+    </div>
+
+    <h2>了解更多</h2>
+    <ul>
+      <li><a href="features.html">核心特性详解</a> — 六大核心优势的详细介绍</li>
+      <li><a href="architecture.html">技术架构</a> — 技术栈、架构图、模块划分</li>
+      <li><a href="quickstart.html">快速开始</a> — 编译、配置、运行指南</li>
+      <li><a href="commands.html">命令参考</a> — 完整 CLI 命令说明</li>
+      <li><a href="store.html">存储引擎</a> — 内容寻址存储详解</li>
+      <li><a href="ai-plan.html">AI 接入计划</a> — 未来的 AI 陪伴与操控</li>
+      <li><a href="roadmap.html">路线图与许可证</a> — 版本规划与 GPL 许可</li>
+    </ul>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>moco &mdash; <a href="https://github.com/yankedi/moco" target="_blank" rel="noopener">github.com/yankedi/moco</a> &mdash; GPL License</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

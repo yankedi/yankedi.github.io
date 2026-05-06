@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>moco — 路线图与许可证</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="moco.ico" sizes="any">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="topbar-logo">moco</a>
+      <nav class="topbar-nav">
+        <a href="index.html">首页</a>
+        <a href="features.html">核心特性</a>
+        <a href="architecture.html">技术架构</a>
+        <a href="quickstart.html">快速开始</a>
+        <a href="commands.html">命令参考</a>
+        <a href="store.html">存储引擎</a>
+        <a href="ai-plan.html">AI 计划</a>
+        <a href="roadmap.html" class="active">路线图</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    <h1>路线图</h1>
+
+    <h2>v0.1.0（当前）</h2>
+    <ul>
+      <li>完成基本命令：init、login、install、start、search、update、import</li>
+      <li>支持 Forge、NeoForge、Fabric 三大模组加载器</li>
+      <li>内容寻址存储与硬链接去重</li>
+      <li>基于 epoll + curl_multi 的并发下载引擎</li>
+      <li>Microsoft OAuth2 完整认证链</li>
+    </ul>
+
+    <h2>短期：v0.2 - v0.3</h2>
+    <div class="page-grid">
+      <div>
+        <h3>自动 JRE 管理</h3>
+        <p>根据 Minecraft 版本自动选择和下载匹配的 JRE（Java 运行时环境），用户不再需要手动安装 Java。</p>
+      </div>
+      <div>
+        <h3>多实例管理</h3>
+        <p>支持同时管理多个 Minecraft 实例（不同版本、不同模组组合），每个实例独立配置、独立启动。</p>
+      </div>
+      <div>
+        <h3>跨平台支持</h3>
+        <p>移植到 macOS 和 Windows 平台，覆盖全部主流桌面操作系统。</p>
+      </div>
+    </div>
+
+    <h2>中期：v0.4 - v0.5</h2>
+    <div class="page-grid">
+      <div>
+        <h3>模组依赖解析</h3>
+        <p>自动解析模组间的依赖关系，提示冲突和缺失。例如：安装模组 A 时自动提示需要前置模组 B。</p>
+      </div>
+      <div>
+        <h3>模组包导出</h3>
+        <p>支持将当前实例导出为 Modrinth 格式的模组包（.mrpack），方便分享给其他玩家。</p>
+      </div>
+    </div>
+
+    <h2>长期愿景</h2>
+    <ul>
+      <li><strong>跨平台 GUI 启动器</strong> — 一个真正原生、不吃资源的 Minecraft 启动器，对标 MultiMC / Prism Launcher，但更轻、更快</li>
+      <li><strong>语言演进</strong> — 作者将跟随学习路线从 C 逐步转向 C++，项目实现语言可能随之迁移</li>
+    </ul>
+
+    <hr style="margin: 2.5rem 0 1.5rem; border: none; border-top: 1px solid var(--color-border);">
+
+    <h2>许可证</h2>
+    <p>moco 采用 <strong>GPL</strong>（GNU General Public License）许可证发布，源代码完全开放。这意味着：</p>
+    <div class="page-grid">
+      <div>
+        <h3>你可以</h3>
+        <ul>
+          <li>自由使用、修改和分发</li>
+          <li>查看和审查每一行代码</li>
+          <li>用于私人用途和商业用途</li>
+        </ul>
+      </div>
+      <div>
+        <h3>你需要遵守</h3>
+        <ul>
+          <li>分发修改后的版本时必须同样以 GPL 开源</li>
+          <li>保留原始版权声明和许可证声明</li>
+          <li>提供源代码访问方式</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>详细条款请查看项目仓库中的 LICENSE.txt 文件。</p>
+
+    <p><a href="index.html">← 返回首页</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>moco &mdash; <a href="https://github.com/yankedi/moco" target="_blank" rel="noopener">github.com/yankedi/moco</a></p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

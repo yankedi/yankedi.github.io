@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>moco — 存储引擎</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="moco.ico" sizes="any">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="topbar-logo">moco</a>
+      <nav class="topbar-nav">
+        <a href="index.html">首页</a>
+        <a href="features.html">核心特性</a>
+        <a href="architecture.html">技术架构</a>
+        <a href="quickstart.html">快速开始</a>
+        <a href="commands.html">命令参考</a>
+        <a href="store.html" class="active">存储引擎</a>
+        <a href="ai-plan.html">AI 计划</a>
+        <a href="roadmap.html">路线图</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    <h1>存储引擎</h1>
+
+    <h2>内容寻址存储（CAS）</h2>
+    <p>所有下载的文件通过 SHA1 校验和存储到内容寻址存储中，路径为 <code>~/.local/share/moco/store/v1/</code>。然后通过硬链接引用到目标路径。</p>
+
+    <h2>工作原理</h2>
+    <pre><code>1. 下载文件 → 计算 SHA1 → 存入 store/v1/{sha1}
+2. 检查目标路径 → 若不存在 → 硬链接 store/v1/{sha1} → 目标路径
+3. 若目标路径已存在且 SHA1 匹配 → 跳过下载
+4. 若目标路径已存在但 SHA1 不匹配 → 替换</code></pre>
+
+    <h2>核心优势</h2>
+    <div class="page-grid">
+      <div>
+        <h3>全局去重</h3>
+        <p>相同的文件只下载一次。无论是多少个 Minecraft 实例引用同一个 library（如 LWJGL），磁盘上只存储一份副本，通过硬链接在多个路径呈现。</p>
+      </div>
+      <div>
+        <h3>完整性验证</h3>
+        <p>每个文件下载后自动与元数据中的 SHA1 进行比较。校验失败的文件会自动标记并重新下载，确保没有任何损坏的数据进入存储。</p>
+      </div>
+      <div>
+        <h3>天然多实例隔离</h3>
+        <p>每一个文件夹就是一个独立的 Minecraft 实例。不同于其他启动器为了共享资源而引入复杂的版本隔离机制，moco 的存储架构让这个矛盾自然消失 —— 文件共享由底层存储透明完成，多个实例之间互不干扰。</p>
+      </div>
+      <div>
+        <h3>空间效率</h3>
+        <p>硬链接不占用额外磁盘空间。不同于复制文件（每个实例一份副本）或软链接（源文件删除后失效），硬链接指向同一个 inode，任一路径都可以独立访问。</p>
+      </div>
+    </div>
+
+    <h2>类比：pnpm 的全局 store</h2>
+    <p>如果你熟悉 Node.js 生态，moco 的存储方案与 pnpm 的全局 store 原理完全相同：文件按内容 hash 存储，项目目录只保留硬链接。意味着：</p>
+    <ul>
+      <li>同一个 package 的不同版本不重复存储相同文件</li>
+      <li>磁盘使用量显著低于 npm（每个项目复制一份）</li>
+      <li>删除项目不影响共享存储中的文件</li>
+    </ul>
+
+    <h2>存储路径</h2>
+    <pre><code>~/.local/share/moco/
+├── store/
+│   └── v1/
+│       ├── a1b2...        # SHA1 命名的文件
+│       ├── c3d4...
+│       └── ...
+├── instances/
+│   └── default/
+│       ├── instance.toml
+│       ├── libraries/     # 硬链接 → store
+│       ├── assets/        # 硬链接 → store
+│       └── versions/      # 硬链接 → store
+└── cache/
+    └── manifests/         # 缓存的版本清单</code></pre>
+
+    <p><a href="index.html">← 返回首页</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>moco &mdash; <a href="https://github.com/yankedi/moco" target="_blank" rel="noopener">github.com/yankedi/moco</a></p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

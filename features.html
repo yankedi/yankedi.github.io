@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>moco — 核心特性</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="moco.ico" sizes="any">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="topbar-logo">moco</a>
+      <nav class="topbar-nav">
+        <a href="index.html">首页</a>
+        <a href="features.html" class="active">核心特性</a>
+        <a href="architecture.html">技术架构</a>
+        <a href="quickstart.html">快速开始</a>
+        <a href="commands.html">命令参考</a>
+        <a href="store.html">存储引擎</a>
+        <a href="ai-plan.html">AI 计划</a>
+        <a href="roadmap.html">路线图</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    <h1>核心特性</h1>
+
+    <h2>1. 极致轻量</h2>
+    <p>moco 的整个运行时是一个 C 编译出的单一可执行文件。启动器本身不消耗系统资源 —— 没有后台服务，没有 Electron 外壳，没有运行时依赖。安装只需要一个二进制文件和一个配置文件。</p>
+
+    <h2>2. 全生命周期管理</h2>
+    <p>从零开始，一条命令链覆盖 Minecraft 实例的完整生命周期：</p>
+    <pre><code>moco init      → 初始化工作目录和配置文件
+moco login     → Microsoft OAuth2 设备码登录
+moco install   → 下载 Minecraft 版本 + 模组加载器 + 模组
+moco start     → 启动游戏</code></pre>
+    <p>此外还支持 <code>moco search</code> 搜索版本、<code>moco update</code> 更新版本清单、<code>moco import</code> 导入 Modrinth 格式的模组包。</p>
+
+    <h2>3. 模组加载器与整合包</h2>
+    <p>moco 支持 <strong>Forge</strong>、<strong>NeoForge</strong>、<strong>Fabric</strong> 三大主流模组加载器，安装和启动流程对每种加载器都做了完整的适配 —— 包括各自的 JSON 参数解析、library 依赖追加、以及正确的 mainClass 替换。</p>
+    <p>同时支持导入 <strong>Modrinth 格式的整合包（.mrpack）</strong>，一条命令即可将别人分享的整合包还原为可运行的 Minecraft 实例，自动生成 <code>instance.toml</code> 并解压覆盖文件。</p>
+
+    <h2>4. 基于内容寻址的智能存储</h2>
+    <p>所有下载的文件通过 SHA1 校验和存储到内容寻址存储（<code>~/.local/share/moco/store/v1/</code>），然后通过硬链接引用到目标路径。原理与 pnpm 的全局 store 相同：</p>
+    <ul>
+      <li><strong>全局去重</strong> — 相同的文件只下载一次，无论多少个实例引用它</li>
+      <li><strong>完整性验证</strong> — 每个文件下载后自动校验 SHA1，失败自动重试</li>
+      <li><strong>天然的多实例隔离</strong> — 每一个文件夹就是一个独立的实例，文件共享由底层的内容寻址存储透明完成</li>
+    </ul>
+    <p>详见 <a href="store.html">存储引擎</a>。</p>
+
+    <h2>5. 异步并发下载引擎</h2>
+    <p>基于 <code>epoll</code> + <code>curl_multi</code> 的自研下载引擎：</p>
+    <ul>
+      <li>最多 16 个并发连接，每主机 6 个连接</li>
+      <li>实时进度条显示（VT100 终端控制）</li>
+      <li>自动重试和 SHA1 完整性校验</li>
+      <li>通过管道通信的后台任务提交机制</li>
+    </ul>
+
+    <h2>6. Microsoft OAuth2 完整认证链</h2>
+    <p>实现了完整的 Xbox Live 认证链：<code>设备码授权 → XBL → XSTS → Minecraft Token</code>，支持 token 自动刷新。启动游戏时自动续期，无需用户手动重新登录。</p>
+
+    <h2>7. 安全透明</h2>
+    <ul>
+      <li><strong>开源</strong> — 代码完全开放，可以审查每一行</li>
+      <li><strong>本地优先</strong> — 所有数据存储在本地，配置是 TOML 明文，没有遥测</li>
+      <li><strong>进程隔离</strong> — 通过 <code>fork() + execvp()</code> 分离启动器和游戏进程</li>
+      <li><strong>无管理员权限</strong> — 不需要 root，不需要修改系统配置</li>
+    </ul>
+
+    <p><a href="index.html">← 返回首页</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>moco &mdash; <a href="https://github.com/yankedi/moco" target="_blank" rel="noopener">github.com/yankedi/moco</a></p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
