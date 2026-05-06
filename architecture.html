@@ -31,18 +31,24 @@
     <h1>技术架构</h1>
 
     <h2>系统架构</h2>
-    <pre><code>┌─────────────────────────────────────────────┐
-│                  moco CLI                    │
-├───────────┬───────────┬───────────┬─────────┤
-│   init    │   login   │  install  │  start  │
-│  update   │  search   │  import   │         │
-├───────────┴───────────┴───────────┴─────────┤
-│            下载引擎 (epoll + curl_multi)      │
-├─────────────────────────────────────────────┤
-│   内容寻址存储 (SHA1 → hardlink)              │
-├─────────────────────────────────────────────┤
-│  cJSON  │  tomlc17  │  OpenSSL  │  libcurl  │
-└─────────────────────────────────────────────┘</code></pre>
+    <div class="arch-stack">
+      <div class="arch-layer arch-top">
+        <strong>moco CLI</strong>
+        <p>init &middot; login &middot; install &middot; start &middot; update &middot; search &middot; import</p>
+      </div>
+      <div class="arch-layer">
+        <strong>下载引擎</strong>
+        <p>epoll + curl_multi 并发下载，进度条，自动重试</p>
+      </div>
+      <div class="arch-layer">
+        <strong>内容寻址存储</strong>
+        <p>SHA1 校验 &rarr; 硬链接去重</p>
+      </div>
+      <div class="arch-layer arch-bottom">
+        <strong>依赖库</strong>
+        <p>cJSON &middot; tomlc17 &middot; OpenSSL &middot; libcurl</p>
+      </div>
+    </div>
 
     <h2>技术栈</h2>
     <table>

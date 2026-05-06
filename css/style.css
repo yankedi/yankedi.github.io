@@ -190,6 +190,48 @@ blockquote {
   margin-bottom: 1.5rem;
 }
 
+.arch-stack {
+  margin-bottom: 1rem;
+}
+
+.arch-layer {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  text-align: center;
+  position: relative;
+  margin-top: 0.75rem;
+}
+
+.arch-layer:first-child { margin-top: 0; }
+
+.arch-layer::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -1px;
+  width: 2px;
+  height: 0.75rem;
+  background: var(--color-border);
+}
+
+.arch-layer:first-child::before { display: none; }
+
+.arch-layer strong {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.arch-layer p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+}
+
+.arch-top strong { color: var(--color-primary); }
+.arch-bottom { background: var(--color-muted); }
+
 .form-group {
   margin-bottom: 1rem;
 }

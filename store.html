@@ -69,19 +69,21 @@
 
     <h2>存储路径</h2>
     <pre><code>~/.local/share/moco/
-├── store/
-│   └── v1/
-│       ├── a1b2...        # SHA1 命名的文件
-│       ├── c3d4...
-│       └── ...
-├── instances/
-│   └── default/
-│       ├── instance.toml
-│       ├── libraries/     # 硬链接 → store
-│       ├── assets/        # 硬链接 → store
-│       └── versions/      # 硬链接 → store
-└── cache/
-    └── manifests/         # 缓存的版本清单</code></pre>
+
+store/
+  v1/
+    a1b2...    (SHA1 命名的文件)
+    c3d4...
+
+instances/
+  default/
+    instance.toml
+    libraries/    (硬链接到 store)
+    assets/       (硬链接到 store)
+    versions/     (硬链接到 store)
+
+cache/
+  manifests/      (缓存的版本清单)</code></pre>
 
     <p><a href="index.html">← 返回首页</a></p>
   </main>

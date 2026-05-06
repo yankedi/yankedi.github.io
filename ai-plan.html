@@ -50,17 +50,11 @@
     <p>moco 不绑定任何特定的 AI 后端。你可以自由选择 Claude Code、本地 llama.cpp、自己写的脚本 —— 没有任何限制。AI 作为一个独立进程运行，moco 负责输出结构化的游戏日志和状态，AI 负责理解并回应。<strong>换一个 AI 就是换一个配置</strong>。</p>
 
     <h2>架构构想</h2>
-    <pre><code>┌──────────────┐    结构化日志     ┌──────────────┐
-│   Minecraft   │ ───────────────→ │    moco      │
-│   游戏进程     │                  │   启动器进程   │
-└──────────────┘                  └──────┬───────┘
-                                         │ JSON 日志
-                                         ↓
-                                  ┌──────────────┐
-                                  │   AI 进程     │
-                                  │  (Claude /    │
-                                  │   llama.cpp)  │
-                                  └──────────────┘</code></pre>
+    <ol>
+      <li><strong>Minecraft 游戏进程</strong> — 输出游戏日志到标准输出</li>
+      <li><strong>moco 启动器进程</strong> — 捕获日志，转换为结构化 JSON</li>
+      <li><strong>AI 进程</strong>（Claude / llama.cpp / 自定义脚本）— 读取 JSON 日志，生成回应或指令</li>
+    </ol>
 
     <p><a href="index.html">← 返回首页</a></p>
   </main>
